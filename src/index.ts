@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoute";
+import { seedInitialProducts } from "./services/productService";
+import productRoute from "./routes/productRoute";
 
 const app = express();
 const PORT = 3001;
@@ -11,7 +13,9 @@ mongoose
   .catch((err) => console.log("Faild to connect!", err));
 app.use(express.json());
 app.use("/user", userRoute);
+app.use("/product", productRoute);
 
+seedInitialProducts();
 app.listen(PORT, () => {
   console.log(`Server is running at: http://localhost:${PORT} .`);
 });
