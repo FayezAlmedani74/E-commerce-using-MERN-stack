@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addItemToCart,
+  clearCart,
   deleteItemFromCart,
   getActiveCartForUser,
   updateItemInCart,
@@ -19,6 +20,13 @@ router.get("/", validateJWT, async (req: ExtendRequest, res) => {
     res.status(500).send("Something went wrong!");
   }
 });
+
+router.delete("/", validateJWT, async (req: ExtendRequest, res) => {
+  const userId = req?.user?._id;
+  const response = await clearCart({ userId });
+  res.status(response.statusCode).send(response.data);
+});
+
 router.post("/items", validateJWT, async (req: ExtendRequest, res) => {
   const userId = req?.user?._id;
   const { productId, quantity } = req.body;
