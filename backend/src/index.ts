@@ -5,6 +5,8 @@ import userRoute from "./routes/userRoute";
 import { seedInitialProducts } from "./services/productService";
 import productRoute from "./routes/productRoute";
 import cartRoute from "./routes/cartRoute";
+import cors from "cors";
+
 const app = express();
 const PORT = 3001;
 dotenv.config();
@@ -13,6 +15,7 @@ mongoose
   .then(() => console.log("Mongo connected!"))
   .catch((err) => console.log("Faild to connect!", err));
 app.use(express.json());
+app.use(cors());
 app.use("/user", userRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
