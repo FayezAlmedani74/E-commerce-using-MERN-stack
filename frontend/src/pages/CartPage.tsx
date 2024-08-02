@@ -9,25 +9,7 @@ const CartPage = () => {
   const { token } = useAuth();
   const { cartItems, totalAmount } = useCart();
   const [, setError] = useState("");
-  // useEffect(() => {
-  //   if (!token) {
-  //     return;
-  //   }
-  //   const fetchCart = async () => {
-  //     const response = await fetch(`${BASE_URL}/cart`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     if (!response.ok) {
-  //       setError("Faild to fetch user cart. Please try again later.");
-  //     }
-  //     const data = await response.json();
 
-  //     setCart(data);
-  //   };
-  //   fetchCart();
-  // }, [token]);
   return (
     <Container sx={{ mt: 2 }}>
       <Typography variant="h4">My Cart</Typography>
