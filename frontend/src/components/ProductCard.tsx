@@ -12,9 +12,14 @@ interface Props {
   price: string;
 }
 export default function ProductCard({ title, image, price }: Props) {
+  console.log("Image path:", image); // Add this line
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia sx={{ height: 200 }} image={image} title="green iguana" />
+      <CardMedia
+        sx={{ height: 200, width: "100%" }}
+        image={image}
+        title="green iguana"
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}

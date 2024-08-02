@@ -9,71 +9,89 @@ export const seedInitialProducts = async () => {
     const products = [
       {
         title: "Produc0",
-        // image: "../../public/images/wallpaperflare.com_wallpaper (3).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (3).jpg",
         image:
-          "data:image/jpeg;base64,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",
+          "https://c0.wallpaperflare.com/preview/37/157/160/unpaired-teal-air-jordan-1-shoe.jpg",
         price: 300,
         stock: 531,
       },
       {
         title: "Produc1",
-        // image: "../../public/images/wallpaperflare.com_wallpaper (3).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (3).jpg",
         image:
-          "data:image/jpeg;base64,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",
+          "https://c0.wallpaperflare.com/preview/102/725/145/pair-of-carhartt-x-nike-air-force-1-shoes.jpg",
         price: 20,
         stock: 220,
       },
       {
         title: "Produc2",
-        image: "../../public/images/wallpaperflare.com_wallpaper (4).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (4).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/28/600/957/pair-of-black-white-and-red-air-jordan-1-shoes.jpg",
         price: 25,
         stock: 120,
       },
       {
         title: "Produc3",
-        image: "../../public/images/wallpaperflare.com_wallpaper (5).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (5).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/206/873/135/gray-and-black-nike-air-jordan-1-s.jpg",
         price: 15,
         stock: 130,
       },
       {
         title: "Produc4",
-        image: "../../public/images/wallpaperflare.com_wallpaper (6).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (6).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/762/772/865/pair-of-white-and-blue-air-jordan-1-s.jpg",
         price: 15,
         stock: 224,
       },
       {
         title: "Produc5",
-        image: "../../public/images/wallpaperflare.com_wallpaper (7).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (7).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/298/846/442/pair-of-black-and-white-air-jordan-13-shoes-on-gray-surface.jpg",
         price: 13,
         stock: 203,
       },
       {
         title: "Produc6",
-        image: "../../public/images/wallpaperflare.com_wallpaper (8).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (8).jpg",
+        image:
+          "https://c1.wallpaperflare.com/preview/1005/511/651/sneaker-shoe-nike-jordan.jpg",
         price: 19,
         stock: 167,
       },
       {
         title: "Produc7",
-        image: "../../public/images/wallpaperflare.com_wallpaper (9).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (9).jpg",
+        image:
+          "https://c1.wallpaperflare.com/preview/607/632/932/shoe-trainer-nike-air-max.jpg",
         price: 23,
         stock: 213,
       },
       {
         title: "Produc8",
-        image: "../../public/images/wallpaperflare.com_wallpaper (10).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (10).jpg",
+        image:
+          "https://c4.wallpaperflare.com/wallpaper/250/588/894/shoes-lebron-ball-nike-wallpaper-preview.jpg",
         price: 27,
         stock: 442,
       },
       {
         title: "Produc9",
-        image: "../../public/images/wallpaperflare.com_wallpaper (11).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (11).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/2/522/500/pair-of-brown-and-white-nike-mid-rise-sneakers-on-gray-concrete-pavement.jpg",
         price: 30,
         stock: 432,
       },
       {
         title: "Produc10",
-        image: "../../public/images/wallpaperflare.com_wallpaper (12).jpg",
+        // image: "/images/wallpaperflare.com_wallpaper (12).jpg",
+        image:
+          "https://c0.wallpaperflare.com/preview/125/443/739/white-nike-air-high-top-and-box.jpg",
         price: 35,
         stock: 331,
       },

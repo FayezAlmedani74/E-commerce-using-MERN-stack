@@ -6,6 +6,7 @@ import { seedInitialProducts } from "./services/productService";
 import productRoute from "./routes/productRoute";
 import cartRoute from "./routes/cartRoute";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 const PORT = 3001;
@@ -14,8 +15,10 @@ mongoose
   .connect(process.env.DATABASE_URL || "")
   .then(() => console.log("Mongo connected!"))
   .catch((err) => console.log("Faild to connect!", err));
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
 app.use(cors());
+// app.use(cors({ origin: "*" }));
 app.use("/user", userRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
