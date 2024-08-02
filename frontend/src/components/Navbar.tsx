@@ -29,7 +29,7 @@ function Navbar() {
     setAnchorElUser(null);
   };
   const handleLogin = () => {
-    navigate("user/login");
+    navigate("/login");
   };
   const handleLogout = () => {
     logout();

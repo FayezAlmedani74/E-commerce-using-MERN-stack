@@ -74,7 +74,7 @@ const LoginPage = () => {
             type="password"
           ></TextField>
           <Button variant="contained" onClick={onSubmit}>
-            Register
+            Login
           </Button>
           {error && <Typography sx={{ color: "red" }}>{error}</Typography>}
         </Box>
