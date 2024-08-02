@@ -4,39 +4,33 @@ import { BASE_URL } from "../constants/baseUrl";
 import { useAuth } from "../context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const [error, setError] = useState("");
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async () => {
-    const firstName = firstNameRef.current?.value;
-    const lastName = lastNameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    if (!firstName || !lastName || !email || !password) {
+    if (!email || !password) {
       setError("Check submitted data!");
       return;
     }
-    console.log(firstName, lastName, email, password);
-    const response = await fetch(`${BASE_URL}/user/register`, {
+    // console.log(email, password);
+    const response = await fetch(`${BASE_URL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName,
-        lastName,
         email,
         password,
       }),
     });
     if (!response.ok) {
-      setError("Enable to register user, please try different credientials!");
+      setError("Enable to login, please try different credientials!");
       return;
     }
     const token = await response.json();
@@ -46,7 +40,7 @@ const RegisterPage = () => {
     }
 
     login(email, token);
-    console.log(token);
+    // console.log(token);
     navigate("/");
   };
   return (
@@ -60,7 +54,7 @@ const RegisterPage = () => {
           mt: 4,
         }}
       >
-        <Typography variant="h5">Register New Account</Typography>
+        <Typography variant="h5">Login to home</Typography>
         <Box
           sx={{
             display: "flex",
@@ -72,16 +66,6 @@ const RegisterPage = () => {
             borderColor: "#f5f5f5",
           }}
         >
-          <TextField
-            inputRef={firstNameRef}
-            label="First Name"
-            name="firstName"
-          ></TextField>
-          <TextField
-            inputRef={lastNameRef}
-            label="Last Name"
-            name="lastName"
-          ></TextField>
           <TextField inputRef={emailRef} label="Email" name="email"></TextField>
           <TextField
             inputRef={passwordRef}
@@ -99,4 +83,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
