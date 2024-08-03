@@ -179,6 +179,30 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       console.log(error);
     }
   };
+  const clearCart = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/cart`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        setError("Faild to delete to cart!");
+        return;
+      }
+      const cart = await response.json();
+
+      if (!cart) {
+        setError("Faild to parse cart data");
+      }
+
+      setCartItems([]);
+      setTotalAmount(0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <CartContext.Provider
       value={{
@@ -187,6 +211,7 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         addItemToCart,
         updateItemInCart,
         removeItemFromCart,
+        clearCart,
       }}
     >
       {children}
