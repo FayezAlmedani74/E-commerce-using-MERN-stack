@@ -28,9 +28,18 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     setToken(null);
   };
 
+  const getMyOrders =async() => {
+    const response = await fetch(`${BASE_URL}/cart/checkout`, {
+      value={{ username, token, isAuthenticated, login, logout, getMyOrders() }}
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }); 
+  }
+
   return (
     <AuthContext.Provider
-      value={{ username, token, isAuthenticated, login, logout }}
+      value={{ username, token, isAuthenticated, login, logout, getMyOrders() }}
     >
       {children}
     </AuthContext.Provider>
