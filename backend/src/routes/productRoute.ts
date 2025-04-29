@@ -1,15 +1,9 @@
 import express from "express";
-import { getAllProducts } from "../services/productService";
+import { productController } from "../controllers/productController";
+import { apiLimiter } from "../utils/rateLimiter";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  try {
-    const products = await getAllProducts();
-    res.status(200).send(products);
-  } catch (error) {
-    res.status(500).send("Something went wrong!");
-  }
-});
+router.get("/",apiLimiter, productController);
 
 export default router;

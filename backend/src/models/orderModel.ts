@@ -19,12 +19,12 @@ const OrderItemSchema = new Schema<IOrderItem>({
   productImage: { type: String, required: true },
   unitPrice: { type: Number, required: true },
   quantity: { type: Number, required: true },
-});
+},{timestamps: true});
 const OrderSchema = new Schema<IOrder>({
   orderItems: [OrderItemSchema],
   total: { type: Number, required: true },
   address: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-});
-
+}, {timestamps: true});
+OrderSchema.index({ userId: 1, createdAt: -1 });
 export const orderModel = mongoose.model<IOrder>("Order", OrderSchema);

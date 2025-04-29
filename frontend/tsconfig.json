@@ -1,4 +1,13 @@
 {
+  // "compilerOptions": {
+  //   "target": "ES6",
+  //   "module": "ESNext",
+  //   "jsx": "react-jsx", // Or "react" for older TS
+  //   "moduleResolution": "node",
+  //   "esModuleInterop": true,
+  //   "skipLibCheck": true,
+  //   "forceConsistentCasingInFileNames": true
+  // },
   "files": [],
   "references": [
     {

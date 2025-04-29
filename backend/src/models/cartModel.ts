@@ -20,14 +20,14 @@ const cartItemSchema = new Schema<ICartItem>({
   product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
   quantity: { type: Number, required: true, default: 1 },
   unitPrice: { type: Number, required: true },
-});
+}, {timestamps: true});
 
 const cartSchema = new Schema<ICart>({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
   items: [cartItemSchema],
   totalAmount: { type: Number, required: true },
   status: { type: String, enum: CartStatusEnum, default: "active" },
-});
+}, {timestamps: true});
 
 const cartModel = mongoose.model<ICart>("Cart", cartSchema);
 

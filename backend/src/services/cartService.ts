@@ -1,10 +1,11 @@
 import cartModel, { ICart, ICartItem } from "../models/cartModel";
 import { IOrderItem, orderModel } from "../models/orderModel";
 import productModel from "../models/productModel";
-
-interface CreateCartForUser {
-  userId: string;
-}
+import { AddItemToCart } from "../types/addItemToCart";
+import { ClearCart } from "../types/clearCart";
+import { CreateCartForUser } from "../types/createCartForUser";
+import { GetActiveCartForUser } from "../types/getActiveCartForUser";
+import redisClient from "../utils/redisClient";
 
 const createCartForUser = async ({ userId }: CreateCartForUser) => {
   const cart = await cartModel.create({ userId, totalAmount: 0 });
@@ -12,11 +13,20 @@ const createCartForUser = async ({ userId }: CreateCartForUser) => {
   return cart;
 };
 
-interface GetActiveCartForUser {
-  userId: string;
-  populateProduct?: boolean;
-}
+const getCartWithCache = async (userId: string) => {
+  const cacheKey = `cart:${userId}`;
+  const cachedCart = await redisClient.get(cacheKey);
+  
+  if (cachedCart) return JSON.parse(cachedCart);
 
+  const cart = await cartModel.findOne({ userId });
+  await redisClient.set(cacheKey,
+    JSON.stringify(cart),"EX",
+    60
+  )
+  
+  return cart;
+};
 export const getActiveCartForUser = async ({
   userId,
   populateProduct,
@@ -35,9 +45,6 @@ export const getActiveCartForUser = async ({
   return cart;
 };
 
-interface ClearCart {
-  userId: string;
-}
 export const clearCart = async ({ userId }: ClearCart) => {
   const cart = await getActiveCartForUser({ userId });
   cart.items = [];
@@ -48,11 +55,7 @@ export const clearCart = async ({ userId }: ClearCart) => {
     statusCode: 200,
   };
 };
-interface AddItemToCart {
-  productId: any;
-  quantity: number;
-  userId: string;
-}
+
 export const addItemToCart = async ({
   productId,
   quantity,

@@ -19,10 +19,12 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response)
       if (!response.ok) {
         setError("Faild to fetch user cart. Please try again later.");
       }
       const cart = await response.json();
+      console.log(cart)
       const cartItemsMapped = cart.items.map(
         ({
           product,
