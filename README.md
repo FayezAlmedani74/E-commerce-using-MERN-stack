@@ -107,6 +107,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ✉️ Contact
 
-Created by Fayez Almedani - feel free to reach out via [LinkedIn](www.linkedin.com/in/fayez-almedani-862b30275) or email at `your.email@example.com`.
+Created by Fayez Almedani - feel free to reach out via [LinkedIn](www.linkedin.com/in/fayez-almedani-862b30275) or email at `fayezalmedani74@gmail.com`.
 
-سس
