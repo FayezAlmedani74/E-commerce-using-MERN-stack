@@ -1,111 +1,147 @@
-# E-Commerce Platform (MERN Stack)
+# E‑Commerce Platform (MERN + TypeScript)
 
-A full-featured e-commerce application built with the **MERN** stack (MongoDB, Express, React, Node.js) and TypeScript. Provides a complete backend REST API and a modern frontend with product management, user authentication, shopping cart, and order processing.
+A full-featured e‑commerce application built with MongoDB, Express, React, and Node.js using TypeScript. It includes authentication, product catalog, shopping cart, checkout, and order history. The codebase is structured as a small monorepo with separate `backend` and `frontend` workspaces.
 
-## 🚀 Live Demo
+## Tech Stack
 
-> _Coming soon!_
-
-## 📦 Tech Stack
-
-- **Backend**
-  - Node.js + Express
-  - TypeScript
-  - MongoDB with Mongoose ODM
-  - Authentication & Security: JWT, CSRF protection, express-rate-limit, express-mongo-sanitize
-  - Validation: Joi
+- Backend
+  - Node.js + Express, TypeScript
+  - MongoDB (Mongoose ODM)
+  - Auth: JWT
+  - Security: express-rate-limit, express-mongo-sanitize, CORS
   - Caching: Redis (ioredis)
-  - Logging: Winston + winston-daily-rotate-file
+  - Logging: winston + daily rotate
+- Frontend
+  - React + TypeScript (Vite)
+  - React Router
+  - Material UI (MUI v5)
 
-- **Frontend**
-  - React + TypeScript
-  - Vite (Fast HMR)
-  - CSS Modules
-  - Axios for HTTP client
+## Features
 
-## ✨ Features
+- User registration and login (JWT)
+- Product listing with seed data and Redis caching
+- Shopping cart: add, update, delete items; clear cart
+- Checkout to create orders; view order history
+- Rate limiting and input sanitization
+- Centralized error handling and structured logging
 
-- **User Management**: Sign up, login, and profile management (JWT + CSRF)
-- **Product CRUD**: Admin can create, read, update, delete products
-- **Catalog & Filters**: Browse products with search and category filtering
-- **Shopping Cart**: Add/remove items, adjust quantities
-- **Order Processing**: Place orders and view order history
-- **Security Improvements**: Rate limiting, input sanitization, secure headers
-- **Logging & Monitoring**: Request and error logging with daily rotation
+## Monorepo Structure
 
-## 🛠️ Installation & Setup
+```
+./
+├── backend/                  # Express API and business logic (TypeScript)
+│   ├── src/
+│   │   ├── controllers/     # Request handlers
+│   │   ├── models/          # Mongoose schemas
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   ├── utils/           # Logger, rate limiter, redis
+│   │   └── index.ts         # Server entry point
+│   ├── public/              # Static assets if any
+│   └── nodemon.json         # Dev runner (ts-node)
+├── frontend/                 # React client (Vite + MUI)
+│   └── src/
+│       ├── components/      # Reusable components
+│       ├── pages/           # Route views
+│       ├── context/         # Auth/Cart providers
+│       └── App.tsx          # Routes
+└── README.md
+```
 
-### 1. Clone the repository
+## Prerequisites
+
+- Node.js 18+
+- MongoDB 6+ running locally or in the cloud
+- Redis 6+ running locally or in the cloud
+
+## Quickstart
+
+1) Clone
+
 ```bash
-git clone https://github.com/FayezAlmedani74/E-commerce-using-MERN-stack.git
+git clone <your-fork-or-repo-url>
 cd E-commerce-using-MERN-stack
 ```
 
-### 2. Setup Backend
+2) Backend
+
 ```bash
 cd backend
 npm install
-cp .env.example .env  # configure your DB URI, JWT_SECRET, Redis URL, etc.
+cp .env.example .env
+# Edit .env to match your environment
 npm run dev
 ```
-The API server will run on `http://localhost:5000` by default.
 
-### 3. Setup Frontend
+By default the server listens on PORT (e.g., 5000). On first start it will seed example products if the database is empty.
+
+3) Frontend
+
 ```bash
 cd ../frontend
 npm install
 npm run dev
 ```
-The frontend will be available at `http://localhost:5173`.
 
-## 📁 Folder Structure
+Frontend will be available at http://localhost:5173.
 
-```
-E-commerce-using-MERN-stack/
-├── backend/              # Express API and business logic
-│   ├── src/
-│   │   ├── controllers/  # Request handlers
-│   │   ├── models/       # Mongoose schemas
-│   │   ├── routes/       # API routes
-│   │   ├── services/     # Business logic
-│   │   ├── utils/        # Validators, error handlers, logger
-│   │   └── index.ts      # Server entry point
-│   └── .env.example      # Environment variables template
+## Environment Variables (backend/.env)
 
-├── frontend/             # React client
-│   ├── src/
-│   │   ├── components/   # Reusable components
-│   │   ├── pages/        # Route views
-│   │   ├── services/     # API calls (Axios)
-│   │   ├── styles/       # CSS Modules
-│   │   └── main.tsx      # React entry point
-│   └── vite.config.ts    # Vite config
+- PORT=5000
+- DATABASE_URL=mongodb://localhost:27017/ecommerce
+- JWT_SECRET=your_jwt_secret
+- REDIS_PASSWORD=            # leave empty if Redis has no password
+- REDIS_HOST=127.0.0.1       # optional, current code defaults to 127.0.0.1
+- REDIS_PORT=6379            # optional, current code defaults to 6379
 
-└── README.md             # Project documentation
-```
+Note: `redisClient` currently uses host/port defaults and reads only `REDIS_PASSWORD`. If you change host/port, update the client accordingly.
 
-## 🌟 Usage
+## API Reference
 
-1. Register a new user or login as an existing user
-2. Browse the product catalog and add items to your cart
-3. Checkout and view your order history
-4. Login as an admin (see `.env` for default credentials) to manage products
+Base URL: http://localhost:<PORT>
 
-## 🤝 Contributing
+- Auth
+  - POST /user/register
+  - POST /user/login
+  - GET  /user/my-orders        (requires Authorization: Bearer <token>)
+- Products
+  - GET  /product               (rate limited, cached)
+- Cart (requires Authorization: Bearer <token>)
+  - GET    /cart
+  - DELETE /cart
+  - POST   /cart/items          { productId, quantity }
+  - PUT    /cart/items          { productId, quantity }
+  - DELETE /cart/items/:productId
+  - POST   /cart/checkout       { address }
 
-Contributions are welcome! Please:
+Responses are consistently sent via a response helper with appropriate HTTP status codes. Rate limits protect auth and general APIs.
 
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -m 'Add YourFeature'`)
-4. Push to the branch (`git push origin feature/YourFeature`)
-5. Open a Pull Request
+## Development
 
-## 📄 License
+- Backend: `npm run dev` (nodemon + ts-node, watches `src/`)
+- Frontend: `npm run dev` (Vite HMR)
+- Logging: view rotating files under `backend/logs/`
+- Data: MongoDB collections for Users, Products, Carts, Orders
+- Caching: Redis key `products` caches product list for 60s
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Security
 
-## ✉️ Contact
+- JWT verification middleware (`validateJWT`)
+- Rate limiting for auth and general routes
+- `express-mongo-sanitize` to prevent operator injection
+- CORS enabled; configure allowed origins as needed
 
-Created by Fayez Almedani - feel free to reach out via [LinkedIn](www.linkedin.com/in/fayez-almedani-862b30275) or email at `fayezalmedani74@gmail.com`.
+## Introducing AI (ideas and integration points)
+
+- Semantic product search: index product titles/images in a vector DB (e.g., Pinecone, pgvector). Add a `/search` endpoint using embeddings.
+- Recommendations: "related items" via content similarity or collaborative filtering. Cache per-product vectors in Redis.
+- Conversational shopping assistant: expose `/assistant/chat` backed by an LLM to answer product and order questions.
+- Fraud and anomaly detection: simple heuristic or model on cart/checkout patterns.
+- Demand forecasting: offline job to predict stock needs and assist restocking.
+
+See `docs/PROJECT_DESCRIPTION.md` for architecture details and an AI roadmap.
+
+## License
+
+MIT
 
