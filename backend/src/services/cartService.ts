@@ -203,7 +203,7 @@ export const checkout = async ({ userId, address }: Checkout) => {
   const order = await orderModel.create({
     orderItems,
     total: cart.totalAmount,
-    address,
+    shipping: address,
     userId,
   });
   cart.status = "completed";

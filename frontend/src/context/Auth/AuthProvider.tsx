@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { BASE_URL } from "../../constants/baseUrl";
+import { Order } from "../../types/Order";
 
 const USERNAME_KEY = "username";
 const TOKEN_KEY = "token";
@@ -12,7 +13,7 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem(TOKEN_KEY)
   );
-  const [myOrders, setMyOrders] = useState([]);
+  const [myOrders, setMyOrders] = useState<Order[]>([]);
   const isAuthenticated = !!token;
 
   const login = (username: string, token: string) => {
@@ -36,9 +37,18 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log("---------------------------")
+    
+    console.log(response)
+    
+    
     if (!response.ok) return;
     const data = await response.json();
+    console.log(data)
     setMyOrders(data);
+    console.log("---------------------------")
+    console.log("---------------------------")
+    console.log(myOrders)
   };
 
   return (

@@ -157,7 +157,8 @@ const CheckoutPage = () => {
   const [country, setCountry] = useState("");
 
   // Payment form
-  const [method, setMethod] = useState<"card" | "paypal">("card");
+  // add "skip" to the union
+const [method, setMethod] = useState<"card" | "paypal" | "skip">("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
@@ -180,14 +181,24 @@ const CheckoutPage = () => {
       setError("Please complete all shipping fields.");
       return;
     }
-    if (method === "card") {
-      if (!cardNumber || !expiry || !cvv) {
-        setError("Please complete all payment fields.");
-        return;
-      }
-    }
+    // if (method === "card") {
+    //   if (!cardNumber || !expiry || !cvv) {
+    //     setError("Please complete all payment fields.");
+    //     return;
+    //   }
+    // }
     setLoading(true);
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    //    const body: any = {
+    //   shipping: { address, city, postal, country },
+    //   payment: { method },
+    // };
+    // if (method === "card") {
+    //   body.payment.cardNumber = cardNumber;
+    //   body.payment.expiry = expiry;
+    //   body.payment.cvv = cvv;
+    // }
       const res = await fetch(`${BASE_URL}/cart/checkout`, {
         method: "POST",
         headers: {
@@ -195,9 +206,12 @@ const CheckoutPage = () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          shipping: { address, city, postal, country },
-          payment: { method, cardNumber, expiry, cvv },
-        }),
+        shipping: { address, city, postal, country },
+        // payment:
+        //   method === "card"
+        //     ? { method, cardNumber, expiry, cvv }
+        //     : { method }, // Send only method for PayPal or Skip Payment
+      }),
       });
       if (!res.ok) throw new Error("Checkout failed. Please try again.");
       clearCart();
@@ -278,7 +292,7 @@ const CheckoutPage = () => {
                     row
                     value={method}
                     onChange={(_: ChangeEvent, v: string) =>
-                      setMethod(v as "card" | "paypal")
+                      setMethod(v as "card" | "paypal" | "skip")
                     }
                   >
                     <FormControlLabel
@@ -299,6 +313,11 @@ const CheckoutPage = () => {
                         </Box>
                       }
                     />
+                    <FormControlLabel
+    value="skip"
+    control={<Radio />}
+    label="Skip Payment (Free / COD)"
+  />
                   </RadioGroup>
 
                   {method === "card" && (
@@ -382,7 +401,7 @@ const CheckoutPage = () => {
                     >
                       <Typography>{item.title} x{item.quantity}</Typography>
                       <Typography>
-                        {(item.quantity * item.unitPrice).toFixed(2)} SYR
+                        {(item.quantity * item.unitPrice).toFixed(2)} $
                       </Typography>
                     </Box>
                   ))}
@@ -391,12 +410,12 @@ const CheckoutPage = () => {
                 <Box my={2}>
                   <Box display="flex" justifyContent="space-between">
                     <Typography>Subtotal</Typography>
-                    <Typography>{totalAmount.toFixed(2)} SYR</Typography>
+                    <Typography>{totalAmount.toFixed(2)} $</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography>Shipping</Typography>
                     <Typography>
-                      {shippingCost === 0 ? "Free" : `${shippingCost.toFixed(2)} SYR`}
+                      {shippingCost === 0 ? "Free" : `${shippingCost.toFixed(2)} $`}
                     </Typography>
                   </Box>
                   <Box
@@ -408,7 +427,7 @@ const CheckoutPage = () => {
                     borderColor="divider"
                   >
                     <Typography fontWeight={700}>Total</Typography>
-                    <Typography fontWeight={700}>{grandTotal} SYR</Typography>
+                    <Typography fontWeight={700}>{grandTotal} $</Typography>
                   </Box>
                 </Box>
               </Paper>

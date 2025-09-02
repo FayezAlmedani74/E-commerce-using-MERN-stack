@@ -51,7 +51,9 @@ const getMyOrdersController = async (
 ) => {
   try {
     const userId = req?.user?._id;
+    console.log(userId)
     const { data, statusCode } = await getMyOrders({ userId });
+    console.log(data)
     sendResponse(res, statusCode, data);
   } catch (error) {
     const customError = error as CustomError;

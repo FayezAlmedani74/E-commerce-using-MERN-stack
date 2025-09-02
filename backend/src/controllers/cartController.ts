@@ -104,8 +104,8 @@ const checkoutController = async (
 ) => {
   try {
     const userId = req?.user?._id;
-    const { address } = req.body;
-    const response = await checkout({ userId, address });
+    const { shipping } = req.body;
+    const response = await checkout({ userId, address: shipping });
     sendResponse(res, response.statusCode, response.data);
   } catch (error) {
     const customError = error as CustomError;

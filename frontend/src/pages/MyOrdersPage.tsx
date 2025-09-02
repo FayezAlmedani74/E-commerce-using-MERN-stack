@@ -46,20 +46,24 @@
 
 import { Box, Container, Paper, Typography, CircularProgress, List, ListItem, ListItemText, Divider } from "@mui/material";
 import { useAuth } from "../context/Auth/AuthContext";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 
 const MyOrdersPage = () => {
   const { getMyOrders, myOrders } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+  console.log("Updated myOrders:", myOrders);
+}, [myOrders]);
+
+  useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
-      await getMyOrders();
+      getMyOrders();
       setLoading(false);
     };
     fetchOrders();
-  }, [getMyOrders]);
+  }, []);
 
   if (loading) {
     return (
@@ -88,7 +92,7 @@ const MyOrdersPage = () => {
         My Orders
       </Typography>
       <Box display="flex" flexDirection="column" gap={3}>
-        {myOrders.map(({ _id, address, orderItem, total, createdAt }) => (
+        {myOrders.map(({ _id, shipping, orderItems, total, createdAt }) => (
           <Paper key={_id} elevation={3} sx={{ p: 3, borderRadius: 3 }}>
             <Box display="flex" justifyContent="space-between" mb={2}>
               <Typography variant="h6">Order ID: {_id}</Typography>
@@ -98,27 +102,31 @@ const MyOrdersPage = () => {
             </Box>
 
             <Typography fontWeight={600}>Delivery Address:</Typography>
-            <Typography mb={2}>{address}</Typography>
+<Typography mb={2}>
+      {shipping.address}, {shipping.city}, {shipping.postal}, {shipping.country}
+    </Typography>
+
 
             <Typography fontWeight={600} mb={1}>
               Items:
             </Typography>
             <List dense disablePadding>
-              {orderItem.map((item: any) => (
-                <ListItem key={item.productId} disableGutters>
-                  <ListItemText
-                    primary={`${item.title} x${item.quantity}`}
-                    secondary={`${item.unitPrice} SYR each`}
-                  />
-                </ListItem>
-              ))}
-            </List>
+  {(orderItems || []).map((item, idx) => (
+    <ListItem key={item.productId ?? idx} disableGutters>
+      <ListItemText
+        primary={`${item.productId} x${item.quantity}`}
+        secondary={`${item.unitPrice} $ each`}
+      />
+    </ListItem>
+  ))}
+</List>
+
 
             <Divider sx={{ my: 2 }} />
 
             <Box display="flex" justifyContent="space-between">
               <Typography fontWeight={600}>Total:</Typography>
-              <Typography fontWeight={700}>{total.toFixed(2)} SYR</Typography>
+              <Typography fontWeight={700}>{total.toFixed(2)} $</Typography>
             </Box>
           </Paper>
         ))}

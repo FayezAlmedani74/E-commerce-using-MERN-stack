@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
+import { Order } from "../../types/Order";
 
 interface AuthContextType {
   username: string | null;
   token: string | null;
   isAuthenticated: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  myOrders: any[];
+  myOrders: Order[];
   login: (username: string, token: string) => void;
   logout: () => void;
   getMyOrders: () => void;

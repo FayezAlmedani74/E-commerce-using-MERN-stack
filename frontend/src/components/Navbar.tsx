@@ -234,7 +234,7 @@ function Navbar() {
                   textDecoration: "none",
                 }}
               >
-                السبيني ماركت
+                KicksLane
               </Typography>
             </Box>
 
